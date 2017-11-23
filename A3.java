@@ -26,7 +26,7 @@ public class A3 {
 		//Get file
 		while (true) {
 			try {
-				if (args[0] == null) {
+				if (args != null) {
 					Scanner locationScan = new Scanner(System.in);
 					System.out.print("Enter the file location: ");
 					String fileLocation = locationScan.nextLine();
@@ -37,7 +37,6 @@ public class A3 {
 				}
 			} catch (FileNotFoundException e) {
 				System.out.println("File not found");
-				args[0] = null;
 				continue;
 			}
 			break;
@@ -105,15 +104,15 @@ public class A3 {
 //					}
 					
 					//Connect all the actors in the movie with each other
-					for (String actorA : actorsInMovie) {
-						int actorAVertex = actorVertices.indexOf(actorA);
-						for (String actorB : actorsInMovie) {
-							if (!actorA.equals(actorB)) {
-								int actorBVertex = actorVertices.indexOf(actorB);
-								g.addEdge(actorAVertex, actorBVertex);
-							}
-						}
-					}
+//					for (String actorA : actorsInMovie) {
+//						int actorAVertex = actorVertices.indexOf(actorA);
+//						for (String actorB : actorsInMovie) {
+//							if (!actorA.equals(actorB)) {
+//								int actorBVertex = actorVertices.indexOf(actorB);
+//								g.addEdge(actorAVertex, actorBVertex);
+//							}
+//						}
+//					}
 					filescan.useDelimiter(Pattern.compile(",|\n"));
 					filescan.next();
 				}
@@ -137,11 +136,20 @@ public class A3 {
 				System.out.println("No such actor.");
 				continue;
 			}
-			//findPath(actorVertices.indexOf(actorA), actorVertices.indexOf(actorB));
+//			ArrayList<Integer> path = findPath(actorVertices.indexOf(actorA), actorVertices.indexOf(actorB));
+//			if (path == null)
+//				System.out.println("No path was found");
+//			else {
+//				System.out.print("Path between " + actor1 + " and " + actor2 + ": ");
+//				for (int v : path) {
+//					if (!actorVertices.get(v).equals(actor2))
+//						System.out.print(actorVertices.get(v) + " --> ");
+//					else
+//						System.out.print(actorVertices.get(v));
+//				}
+//			}
 			break;
 		}
 		inputScan.close();
 	}
-	
-	//public void findPath(int vertexA, int vertexB);
 }
