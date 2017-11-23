@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 //import java.io.FileReader;
 //import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -136,18 +137,19 @@ public class A3 {
 				System.out.println("No such actor.");
 				continue;
 			}
-//			ArrayList<Integer> path = findPath(actorVertices.indexOf(actorA), actorVertices.indexOf(actorB));
-//			if (path == null)
-//				System.out.println("No path was found");
-//			else {
-//				System.out.print("Path between " + actor1 + " and " + actor2 + ": ");
-//				for (int v : path) {
-//					if (!actorVertices.get(v).equals(actor2))
-//						System.out.print(actorVertices.get(v) + " --> ");
-//					else
-//						System.out.print(actorVertices.get(v));
-//				}
-//			}
+			ArrayList<Integer> path = g.findPath(actorVertices.indexOf(actor1), actorVertices.indexOf(actor2));
+			Collections.reverse(path);
+			if (path == null)
+				System.out.println("No path was found");
+			else {
+				System.out.print("Path between " + actor1 + " and " + actor2 + ": ");
+				for (int v : path) {
+					if (!actorVertices.get(v).equals(actor2))
+						System.out.print(actorVertices.get(v) + " --> ");
+					else
+						System.out.print(actorVertices.get(v));
+				}
+			}
 			break;
 		}
 		inputScan.close();
