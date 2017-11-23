@@ -57,6 +57,8 @@ public class Graph {
 //		}
 //	}
 	
+	
+	//IS IT OK FOR THIS TO BE RECURSIVE?
 	public ArrayList<Integer> findPath(int vertexA, int vertexB) {
 		boolean[] visited = new boolean[edges.length];
 		return findPath(vertexA, vertexB, visited);
@@ -66,9 +68,12 @@ public class Graph {
 		ArrayQueue q = new ArrayQueue();
 		q.enqueue(vertexA);
 		ArrayList<Integer> path = new ArrayList<Integer>();
+		if (vertexA == vertexB) {
+			path.add(vertexA);
+			return path;
+		}
 		while (!q.empty()) {
 			int v = (Integer) q.dequeue();
-			
 			visited[v] = true;
 			Iterator<Integer> it = getNeighbors(v).iterator();
 			while (it.hasNext()) {
@@ -76,12 +81,15 @@ public class Graph {
 				if (!visited[u]) {
 					q.enqueue(u);
 					visited[u] = true;
+					if (u == vertexB) {
+						path.add(u);
+						path.addAll(findPath(vertexA, v));
+						return path;
+					}
 				}
 			}
 		}
-		if (!visited[vertexB])
-			return null;
-		else
-			return path;
+		//A path could not be found
+		return null;
 	}
 }
