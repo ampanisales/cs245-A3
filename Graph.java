@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -29,21 +30,45 @@ public class Graph {
 		return list;
 	}
 	
-	public void bfs() {
+//	public void bfs() {
+//		boolean[] visited = new boolean[edges.length];
+//		bfs(0, visited);
+//		for (int i = 0; i < visited.length; i++) {
+//			if (!visited[i])
+//				bfs(i, visited);
+//		}
+//	}
+//	
+//	private void bfs(int vertex, boolean[] visited) {
+//		ArrayQueue q = new ArrayQueue();
+//		q.enqueue(vertex);
+//		while (!q.empty()) {
+//			int v = (Integer) q.dequeue();
+//			System.out.println(v + " ");
+//			visited[v] = true;
+//			Iterator<Integer> it = getNeighbors(v).iterator();
+//			while (it.hasNext()) {
+//				int u = it.next();
+//				if (!visited[u]) {
+//					q.enqueue(u);
+//					visited[u] = true;
+//				}
+//			}
+//		}
+//	}
+	
+	public ArrayList<Integer> findPath(int vertexA, int vertexB) {
 		boolean[] visited = new boolean[edges.length];
-		bfs(0, visited);
-		for (int i = 0; i < visited.length; i++) {
-			if (!visited[i])
-				bfs(i, visited);
-		}
+		return findPath(vertexA, vertexB, visited);
 	}
 	
-	private void bfs(int vertex, boolean[] visited) {
+	private ArrayList<Integer> findPath(int vertexA, int vertexB, boolean[] visited) {
 		ArrayQueue q = new ArrayQueue();
-		q.enqueue(vertex);
+		q.enqueue(vertexA);
+		ArrayList<Integer> path = new ArrayList<Integer>();
 		while (!q.empty()) {
 			int v = (Integer) q.dequeue();
-			System.out.println(v + " ");
+			
 			visited[v] = true;
 			Iterator<Integer> it = getNeighbors(v).iterator();
 			while (it.hasNext()) {
@@ -54,5 +79,9 @@ public class Graph {
 				}
 			}
 		}
+		if (!visited[vertexB])
+			return null;
+		else
+			return path;
 	}
 }
