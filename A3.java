@@ -59,33 +59,31 @@ public class A3 {
 				if (i < 2) {
 					filescan.next();
 				} else {
-					Scanner innerFileScan = filescan;
-					
 					//So innerFileScan reads whole JSONArray
-					innerFileScan.useDelimiter(Pattern.compile("\\["));
-					innerFileScan.next();
-					innerFileScan.useDelimiter(Pattern.compile("\\]"));
-					String data = innerFileScan.next();
+					filescan.useDelimiter(Pattern.compile("\\["));
+					filescan.next();
+					filescan.useDelimiter(Pattern.compile("\\]"));
+					String data = filescan.next();
 					
 					JSONParser parser = new JSONParser();
 					String arr = data.replaceAll("\"\"", "\"");
 					JSONArray cast;
 					
 					try {
-						//System.out.println(arr);
 						cast = (JSONArray) parser.parse(arr + "]");
+						//System.out.println(arr);
 					} catch (Exception e) {
 						String data2 = "";
 						while (true) {
-							data2 = innerFileScan.next();
+							data2 = filescan.next();
 							String arr2 = "]" + data2.replaceAll("\"\"", "\"");
 							arr += arr2;
-							data2 = innerFileScan.next();
+							data2 = filescan.next();
 							if (data2.charAt(1) == ',')
 								break;
 						}
-						//System.out.println(arr);
 						cast = (JSONArray) parser.parse(arr + "]");
+						//System.out.println(arr);
 					}
 					
 					//Get actor's names
@@ -113,6 +111,7 @@ public class A3 {
 //					}
 					filescan.nextLine();
 					filescan.useDelimiter(Pattern.compile(","));
+					//System.out.println("Pattern of filescan: " + filescan.delimiter());
 				}
 			}
 		}
