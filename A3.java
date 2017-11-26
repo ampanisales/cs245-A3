@@ -54,68 +54,70 @@ public class A3 {
 		corresponds to */
 		ArrayList<String> actorVertices = new ArrayList<String>(); 
 		
+		int numOfMovies = 0;
 		while (filescan.hasNextLine()) {
-			for (int i = 0; i < 3; i++) {
-				if (i < 2) {
-					filescan.next();
-				} else {
-					//So innerFileScan reads whole JSONArray
-					filescan.useDelimiter(Pattern.compile("\\["));
-					filescan.next();
-					filescan.useDelimiter(Pattern.compile("\\]"));
-					String data = filescan.next();
-					
-					JSONParser parser = new JSONParser();
-					String arr = data.replaceAll("\"\"", "\"");
-					JSONArray cast;
-					
-					try {
-						cast = (JSONArray) parser.parse(arr + "]");
-						//System.out.println(arr);
-					} catch (Exception e) {
-						String data2 = "";
-						while (true) {
-							data2 = filescan.next();
-							String arr2 = "]" + data2.replaceAll("\"\"", "\"");
-							arr += arr2;
-							data2 = filescan.next();
-							if (data2.charAt(1) == ',')
-								break;
-						}
-						cast = (JSONArray) parser.parse(arr + "]");
-						//System.out.println(arr);
-					}
-					
-					//Get actor's names
-					Iterator<JSONObject> it = cast.iterator();
-					ArrayList<String> actorsInMovie = new ArrayList<String>();
-					while (it.hasNext()) {
-						JSONObject jsOb = it.next();
-						String actorName = (String) jsOb.get("name");
-						
-						//If the actor has not been accounted for yet
-						if (!actorVertices.contains(actorName))
-							actorVertices.add(actorName);	
-						actorsInMovie.add(actorName);
-					}
-					
-					//Connect all the actors in the movie with each other
-//					for (String actorA : actorsInMovie) {
-//						int actorAVertex = actorVertices.indexOf(actorA);
-//						for (String actorB : actorsInMovie) {
-//							if (!actorA.equals(actorB)) {
-//								int actorBVertex = actorVertices.indexOf(actorB);
-//								g.addEdge(actorAVertex, actorBVertex);
-//							}
-//						}
-//					}
-					filescan.nextLine();
-					filescan.useDelimiter(Pattern.compile(","));
-					//System.out.println("Pattern of filescan: " + filescan.delimiter());
+			numOfMovies++;
+			
+			//So movieID and title are skipped
+			filescan.next();
+			filescan.next();
+			
+			//So innerFileScan reads whole JSONArray
+			filescan.useDelimiter(Pattern.compile("\\["));
+			filescan.next();
+			filescan.useDelimiter(Pattern.compile("\\]"));
+			String data = filescan.next();
+			
+			JSONParser parser = new JSONParser();
+			String arr = data.replaceAll("\"\"", "\"");
+			JSONArray cast;
+			
+			try {
+				cast = (JSONArray) parser.parse(arr + "]");
+				//System.out.println(arr);
+			} catch (Exception e) {
+				String data2 = "";
+				while (true) {
+					data2 = filescan.next();
+					String arr2 = "]" + data2.replaceAll("\"\"", "\"");
+					arr += arr2;
+					data2 = filescan.next();
+					if (data2.charAt(1) == ',')
+						break;
 				}
+				cast = (JSONArray) parser.parse(arr + "]");
+				//System.out.println(arr);
 			}
+			
+			//Get actor's names
+			Iterator<JSONObject> it = cast.iterator();
+			ArrayList<String> actorsInMovie = new ArrayList<String>();
+			while (it.hasNext()) {
+				JSONObject jsOb = it.next();
+				String actorName = (String) jsOb.get("name");
+				
+				//If the actor has not been accounted for yet
+				if (!actorVertices.contains(actorName))
+					actorVertices.add(actorName);	
+				actorsInMovie.add(actorName);
+			}
+			
+			//Connect all the actors in the movie with each other
+//			for (String actorA : actorsInMovie) {
+//				int actorAVertex = actorVertices.indexOf(actorA);
+//				for (String actorB : actorsInMovie) {
+//					if (!actorA.equals(actorB)) {
+//						int actorBVertex = actorVertices.indexOf(actorB);
+//						g.addEdge(actorAVertex, actorBVertex);
+//					}
+//				}
+//			}
+			filescan.nextLine();
+			filescan.useDelimiter(Pattern.compile(","));
+			//System.out.println("Pattern of filescan: " + filescan.delimiter());
 		}
 		filescan.close();
+		System.out.println("Number of movies: " + numOfMovies);
 		System.out.println("Number of actors: " + actorVertices.size());
 		
 		//Asks user for names of actors then finds a path between them
