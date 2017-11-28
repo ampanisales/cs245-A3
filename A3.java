@@ -9,12 +9,15 @@ import java.io.FileNotFoundException;
 //import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
- * Class Purpose: 
+ * Class Purpose: Reads and retrieves the names of 
+ * actors from the 'tmdb_5000_credits.csv' file, then 
+ * finds the shortest path between two actors
  * 
  * @author Anthony Panisales
  */
@@ -47,16 +50,18 @@ public class A3 {
 		filescan.nextLine(); //So first line isn't used
 		filescan.useDelimiter(Pattern.compile(","));
 		
-		//Graph g = new Graph(54200); //ASK PROFESSOR ABOUT HEAP SIZE
-		Graph g = new Graph(10000);
+		Graph g = new Graph(54200);
+		int i = 0;
 	
 		/*This keeps track of which actor each vertex in the graph
 		corresponds to */
-		ArrayList<String> actorVertices = new ArrayList<String>(); 
+		HashMap<String,Integer> actorVertices = new HashMap<String,Integer>();
 		
 		int numOfMovies = 0;
+		System.out.println("Getting actor names from file...");
 		while (filescan.hasNextLine()) {
-			numOfMovies++;
+			//numOfMovies++;
+			System.out.println("Number of movies: " + numOfMovies++);
 			
 			//So movieID and title are skipped
 			filescan.next();
@@ -91,27 +96,28 @@ public class A3 {
 			
 			//Get actor's names
 			Iterator<JSONObject> it = cast.iterator();
-			ArrayList<String> actorsInMovie = new ArrayList<String>();
+			HashMap<String,Integer> actorsInMovie = new HashMap<String,Integer>();
+			int j = 0;
 			while (it.hasNext()) {
 				JSONObject jsOb = it.next();
-				String actorName = (String) jsOb.get("name");
-				
-				//If the actor has not been accounted for yet
-				if (!actorVertices.contains(actorName))
-					actorVertices.add(actorName);	
-				actorsInMovie.add(actorName);
+				String actorName = ((String) jsOb.get("name"));
+				if (!actorVertices.containsKey(actorName)) {
+					g.vertices[i].value = actorName;
+					actorVertices.put(actorName, i++);
+				}
+				actorsInMovie.put(actorName, j++);
 			}
 			
 			//Connect all the actors in the movie with each other
-//			for (String actorA : actorsInMovie) {
-//				int actorAVertex = actorVertices.indexOf(actorA);
-//				for (String actorB : actorsInMovie) {
-//					if (!actorA.equals(actorB)) {
-//						int actorBVertex = actorVertices.indexOf(actorB);
-//						g.addEdge(actorAVertex, actorBVertex);
-//					}
-//				}
-//			}
+			for (String actorA : actorsInMovie.keySet()) {
+				int actorAVertex = actorVertices.get(actorA);
+				for (String actorB : actorsInMovie.keySet()) {
+					if (!actorA.equals(actorB)) {
+						int actorBVertex = actorVertices.get(actorB);
+						g.addEdge(actorAVertex, actorBVertex);
+					}
+				}
+			}
 			filescan.nextLine();
 			filescan.useDelimiter(Pattern.compile(","));
 			//System.out.println("Pattern of filescan: " + filescan.delimiter());
@@ -125,31 +131,33 @@ public class A3 {
 		while (true) {
 			System.out.print("Actor 1 name: ");
 			String actor1 = inputScan.nextLine();
-			if (!actorVertices.contains(actor1)) {
+			if (!actorVertices.containsKey(actor1)) {
 				System.out.println("No such actor.");
 				continue;
 			}
 			System.out.print("Actor 2 name: ");
 			String actor2 = inputScan.nextLine();
-			if (!actorVertices.contains(actor2)) {
+			if (!actorVertices.containsKey(actor2)) {
 				System.out.println("No such actor.");
 				continue;
 			}
-			ArrayList<Integer> path = g.findPath(actorVertices.indexOf(actor1), actorVertices.indexOf(actor2));
+			ArrayList<String> path = g.findPath(actorVertices.get(actor1), 
+					actorVertices.get(actor2));
 			Collections.reverse(path);
 			if (path == null)
 				System.out.println("No path was found");
 			else {
 				System.out.print("Path between " + actor1 + " and " + actor2 + ": ");
-				for (int v : path) {
-					if (!actorVertices.get(v).equals(actor2))
-						System.out.print(actorVertices.get(v) + " --> ");
+				for (String actor : path) {
+					if (!actor.equals(actor2))
+						System.out.print(actor + " --> ");
 					else
-						System.out.print(actorVertices.get(v));
+						System.out.print(actor);
 				}
 			}
-			break;
+			System.out.println();
+			//break;
 		}
-		inputScan.close();
+		//inputScan.close();
 	}
 }
