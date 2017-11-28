@@ -26,16 +26,15 @@ public class A3 {
 
 	public static void main(String args[]) throws ParseException {
 		Scanner filescan;
+		Scanner inputScan = new Scanner(System.in);
 		
 		//Get file
 		while (true) {
 			try {
-				if (args == null) {
-					Scanner locationScan = new Scanner(System.in);
+				if (args.length == 0) {
 					System.out.print("Enter the file location: ");
-					String fileLocation = locationScan.nextLine();
+					String fileLocation = inputScan.nextLine();
 					filescan = new Scanner(new File(fileLocation));
-					locationScan.close();
 				} else {
 					filescan = new Scanner(new File(args[0]));
 				}
@@ -102,7 +101,10 @@ public class A3 {
 				JSONObject jsOb = it.next();
 				String actorName = ((String) jsOb.get("name"));
 				if (!actorVertices.containsKey(actorName)) {
+					
+					//You might have to have getters and setters for this
 					g.vertices[i].value = actorName;
+					
 					actorVertices.put(actorName, i++);
 				}
 				actorsInMovie.put(actorName, j++);
@@ -127,7 +129,6 @@ public class A3 {
 		System.out.println("Number of actors: " + actorVertices.size());
 		
 		//Asks user for names of actors then finds a path between them
-		Scanner inputScan = new Scanner(System.in);
 		while (true) {
 			System.out.print("Actor 1 name: ");
 			String actor1 = inputScan.nextLine();
@@ -156,8 +157,8 @@ public class A3 {
 				}
 			}
 			System.out.println();
-			//break;
+			break;
 		}
-		//inputScan.close();
+		inputScan.close();
 	}
 }
