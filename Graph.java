@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -21,9 +22,13 @@ public class Graph {
 			value = newVal;
 			connections = new LinkedList<Vertex>();
 		}
+		
+		public void setValue(String newVal) {
+			value = newVal;
+		}
 	}
 
-	Vertex[] vertices;
+	private Vertex[] vertices;
 	
 	public Graph(int n) {
 		vertices = new Vertex[n];
@@ -31,20 +36,8 @@ public class Graph {
 			vertices[i] = new Vertex(null);
 	}
 	
-	/**
-	 * Function Purpose: Searches for the vertex in 
-	 * 'vertices' with a specific actor's name. Returns
-	 * the index of that vertex in 'vertices' if located.
-	 * Returns -1 otherwise.
-	 */
-	public int search(Vertex[] arr, String target) {
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i].value == null)
-				return -1;
-			else if (arr[i].value.equals(target))
-				return i;
-		}
-		return -1;
+	public Vertex[] getVertices() {
+		return vertices;
 	}
 	
 	public void addEdge(int actorAVertex, int actorBVertex) {
@@ -63,44 +56,17 @@ public class Graph {
 		return vertices[index].connections;
 	}
 	
-//	public void bfs() {
-//		boolean[] visited = new boolean[edges.length];
-//		bfs(0, visited);
-//		for (int i = 0; i < visited.length; i++) {
-//			if (!visited[i])
-//				bfs(i, visited);
-//		}
-//	}
-//	
-//	private void bfs(int vertex, boolean[] visited) {
-//		ArrayQueue q = new ArrayQueue();
-//		q.enqueue(vertex);
-//		while (!q.empty()) {
-//			int v = (Integer) q.dequeue();
-//			System.out.println(v + " ");
-//			visited[v] = true;
-//			Iterator<Integer> it = getNeighbors(v).iterator();
-//			while (it.hasNext()) {
-//				int u = it.next();
-//				if (!visited[u]) {
-//					q.enqueue(u);
-//					visited[u] = true;
-//				}
-//			}
-//		}
-//	}
-	
 	/**
 	 * Function Purpose: Finds the shortest path between two vertices
 	 * and returns the path as an ArrayList.
 	 */
 	//IS IT OK FOR THIS TO BE RECURSIVE?
-	public ArrayList<String> findPath(int indexA, int indexB) {
+	public ArrayList<String> findPath(int indexA, int indexB, HashMap<String,Integer> map) {
 		boolean[] visited = new boolean[vertices.length];
-		return findPath(indexA, indexB, visited);
+		return findPath(indexA, indexB, visited, map);
 	}
 	
-	private ArrayList<String> findPath(int indexA, int indexB, boolean[] visited) {
+	private ArrayList<String> findPath(int indexA, int indexB, boolean[] visited, HashMap<String,Integer> map) {
 		ArrayQueue q = new ArrayQueue();
 		q.enqueue(indexA);
 		ArrayList<String> path = new ArrayList<String>();
@@ -113,13 +79,14 @@ public class Graph {
 			visited[v] = true;
 			Iterator<Vertex> it = getNeighbors(v).iterator();
 			while (it.hasNext()) {
-				int u = search(vertices, it.next().value);
+				//HashMaps allow us to get the index of the vertex in 'vertices' quicker
+				int u = map.get(it.next().value);
 				if (!visited[u]) {
 					q.enqueue(u);
 					visited[u] = true;
 					if (u == indexB) {
 						path.add(vertices[u].value);
-						path.addAll(findPath(indexA, v));
+						path.addAll(findPath(indexA, v, map));
 						return path;
 					}
 				}
