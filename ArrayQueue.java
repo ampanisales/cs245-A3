@@ -1,5 +1,6 @@
 /**
- * Class Purpose: 
+ * Class Purpose: Used in the findPath() method 
+ * in Graph.java
  * 
  * @author Anthony Panisales
  */
