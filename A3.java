@@ -50,16 +50,15 @@ public class A3 {
 		filescan.useDelimiter(Pattern.compile(","));
 		
 		Graph g = new Graph(54200);
-		int i = 0;
-	
+		
 		/*This keeps track of which actor each vertex in the graph
 		corresponds to */
 		HashMap<String,Integer> actorVertices = new HashMap<String,Integer>();
+		int i = 0;
 		
 		int numOfMovies = 0;
 		System.out.println("Getting actor names from file...");
 		while (filescan.hasNextLine()) {
-			//numOfMovies++;
 			System.out.println("Number of movies: " + numOfMovies++);
 			
 			//So movieID and title are skipped
@@ -78,7 +77,6 @@ public class A3 {
 			
 			try {
 				cast = (JSONArray) parser.parse(arr + "]");
-				//System.out.println(arr);
 			} catch (Exception e) {
 				String data2 = "";
 				while (true) {
@@ -90,7 +88,6 @@ public class A3 {
 						break;
 				}
 				cast = (JSONArray) parser.parse(arr + "]");
-				//System.out.println(arr);
 			}
 			
 			//Get actor's names
@@ -101,10 +98,7 @@ public class A3 {
 				JSONObject jsOb = it.next();
 				String actorName = ((String) jsOb.get("name"));
 				if (!actorVertices.containsKey(actorName)) {
-					
-					//You might have to have getters and setters for this
-					g.vertices[i].value = actorName;
-					
+					g.getVertices()[i].setValue(actorName);
 					actorVertices.put(actorName, i++);
 				}
 				actorsInMovie.put(actorName, j++);
@@ -122,7 +116,6 @@ public class A3 {
 			}
 			filescan.nextLine();
 			filescan.useDelimiter(Pattern.compile(","));
-			//System.out.println("Pattern of filescan: " + filescan.delimiter());
 		}
 		filescan.close();
 		System.out.println("Number of movies: " + numOfMovies);
@@ -130,20 +123,25 @@ public class A3 {
 		
 		//Asks user for names of actors then finds a path between them
 		while (true) {
+			System.out.println("Enter 'exit' to exit the program ");
 			System.out.print("Actor 1 name: ");
 			String actor1 = inputScan.nextLine();
-			if (!actorVertices.containsKey(actor1)) {
+			if (actor1.equals("exit"))
+				break;
+			else if (!actorVertices.containsKey(actor1)) {
 				System.out.println("No such actor.");
 				continue;
 			}
 			System.out.print("Actor 2 name: ");
 			String actor2 = inputScan.nextLine();
-			if (!actorVertices.containsKey(actor2)) {
+			if (actor2.equals("exit"))
+				break;
+			else if (!actorVertices.containsKey(actor2)) {
 				System.out.println("No such actor.");
 				continue;
 			}
 			ArrayList<String> path = g.findPath(actorVertices.get(actor1), 
-					actorVertices.get(actor2));
+					actorVertices.get(actor2), actorVertices);
 			Collections.reverse(path);
 			if (path == null)
 				System.out.println("No path was found");
@@ -153,11 +151,9 @@ public class A3 {
 					if (!actor.equals(actor2))
 						System.out.print(actor + " --> ");
 					else
-						System.out.print(actor);
+						System.out.println(actor);
 				}
 			}
-			System.out.println();
-			break;
 		}
 		inputScan.close();
 	}
