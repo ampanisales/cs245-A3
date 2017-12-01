@@ -47,17 +47,15 @@ public class A3 {
 		filescan.nextLine(); //So first line isn't used
 		filescan.useDelimiter(Pattern.compile(","));
 		
-		Graph g = new Graph(54200);
+		Graph g = new Graph(110000);
 		
 		/*This keeps track of which actor each vertex in the graph
 		corresponds to */
 		HashMap<String,Integer> actorVertices = new HashMap<String,Integer>();
 		int i = 0;
 		
-		int numOfMovies = 0;
 		System.out.println("Getting actor names from file...");
 		while (filescan.hasNextLine()) {
-			System.out.println("Number of movies: " + numOfMovies++);
 				
 			//So movieID and title are skipped
 			filescan.next();
@@ -116,9 +114,7 @@ public class A3 {
 			filescan.useDelimiter(Pattern.compile(","));
 		}
 		filescan.close();
-		System.out.println("Number of movies: " + numOfMovies);
 		System.out.println("File has been completely read");
-		System.out.println("Total number of actors: " + actorVertices.size());
 		
 		//Asks user for names of actors then finds a path between them
 		while (true) {
