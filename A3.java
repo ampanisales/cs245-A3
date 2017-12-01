@@ -117,7 +117,7 @@ public class A3 {
 		}
 		filescan.close();
 		System.out.println("Number of movies: " + numOfMovies);
-		System.out.println("File is completely read");
+		System.out.println("File has been completely read");
 		System.out.println("Total number of actors: " + actorVertices.size());
 		
 		//Asks user for names of actors then finds a path between them
