@@ -17,6 +17,9 @@ public class ArrayQueue implements Queue {
 		arr = new Object[10];
 	}
 
+	/**
+	 * Function Purpose: Adds an item to the queue.
+	 */
 	public void enqueue(Object item) {
 		if (full()) {
 			growQueue();
@@ -25,6 +28,9 @@ public class ArrayQueue implements Queue {
 		tail = (tail + 1) % arr.length; //Prevents out of bounds
 	}
 
+	/**
+	 * Function Purpose: Removes an item from the queue.
+	 */
 	public Object dequeue() {
 		if (empty()) {
 			return null;
@@ -34,6 +40,10 @@ public class ArrayQueue implements Queue {
 		return temp;
 	}
 
+	/**
+	 * Function Purpose: Doubles the size of the queue. Used when the
+	 * queue is almost full.
+	 */
 	public void growQueue() {
 		Object[] newArr = new Object[2 * arr.length];
 
@@ -46,6 +56,9 @@ public class ArrayQueue implements Queue {
 		arr = newArr;
 	}
 
+	/**
+	 * Function Purpose: Indicates whether the queue is full or not
+	 */
 	public boolean full() {
 		if ((tail+1) % arr.length == head) { //Prevents out of bounds
 			return true;
@@ -53,6 +66,9 @@ public class ArrayQueue implements Queue {
 		return false;
 	}
 
+	/**
+	 * Function Purpose: Indicates whether the queue is empty or not
+	 */
 	public boolean empty() {
 		if (head == tail) {
 			return true;
