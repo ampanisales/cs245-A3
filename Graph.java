@@ -4,8 +4,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 /**
- * Class Purpose: Holds all of the names of 
- * actors that were read from the the 
+ * Class Purpose: Holds the names of 
+ * the actors that were read from the 
  * 'tmdb_5000_credits.csv' file
  * 
  * @author Anthony Panisales
@@ -13,16 +13,23 @@ import java.util.LinkedList;
 
 public class Graph {
 	
+	/**
+	 * Class Purpose: Structure of the vertices that
+	 * make up the graph
+	 */
 	class Vertex {
 		
-		String value; 
-		LinkedList<Vertex> connections;
+		private String value; 
+		private LinkedList<Vertex> connections;
 		
 		public Vertex(String newVal) {
 			value = newVal;
 			connections = new LinkedList<Vertex>();
 		}
 		
+		/**
+		 * Function Purpose: Setter method for 'value'.
+		 */
 		public void setValue(String newVal) {
 			value = newVal;
 		}
@@ -36,10 +43,16 @@ public class Graph {
 			vertices[i] = new Vertex(null);
 	}
 	
+	/**
+	 * Function Purpose: Getter method for 'vertices'.
+	 */
 	public Vertex[] getVertices() {
 		return vertices;
 	}
 	
+	/**
+	 * Function Purpose: Creates a connection between two vertices.
+	 */
 	public void addEdge(int actorAVertex, int actorBVertex) {
 		Vertex v1 = vertices[actorAVertex];
 		Vertex v2 = vertices[actorBVertex];
@@ -60,7 +73,6 @@ public class Graph {
 	 * Function Purpose: Finds the shortest path between two vertices
 	 * and returns the path as an ArrayList.
 	 */
-	//IS IT OK FOR THIS TO BE RECURSIVE?
 	public ArrayList<String> findPath(int indexA, int indexB, HashMap<String,Integer> map) {
 		boolean[] visited = new boolean[vertices.length];
 		return findPath(indexA, indexB, visited, map);
