@@ -5,8 +5,6 @@ import org.json.simple.parser.ParseException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-//import java.io.FileReader;
-//import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -60,7 +58,7 @@ public class A3 {
 		System.out.println("Getting actor names from file...");
 		while (filescan.hasNextLine()) {
 			System.out.println("Number of movies: " + numOfMovies++);
-			
+				
 			//So movieID and title are skipped
 			filescan.next();
 			filescan.next();
@@ -119,13 +117,14 @@ public class A3 {
 		}
 		filescan.close();
 		System.out.println("Number of movies: " + numOfMovies);
-		System.out.println("Number of actors: " + actorVertices.size());
+		System.out.println("File is completely read");
+		System.out.println("Total number of actors: " + actorVertices.size());
 		
 		//Asks user for names of actors then finds a path between them
 		while (true) {
 			System.out.println("Enter 'exit' to exit the program ");
 			System.out.print("Actor 1 name: ");
-			String actor1 = inputScan.nextLine();
+			String actor1 = inputScan.nextLine().trim();
 			if (actor1.equals("exit"))
 				break;
 			else if (!actorVertices.containsKey(actor1)) {
@@ -133,7 +132,7 @@ public class A3 {
 				continue;
 			}
 			System.out.print("Actor 2 name: ");
-			String actor2 = inputScan.nextLine();
+			String actor2 = inputScan.nextLine().trim();
 			if (actor2.equals("exit"))
 				break;
 			else if (!actorVertices.containsKey(actor2)) {
@@ -156,5 +155,6 @@ public class A3 {
 			}
 		}
 		inputScan.close();
+		System.out.println("Program has ended");
 	}
 }
